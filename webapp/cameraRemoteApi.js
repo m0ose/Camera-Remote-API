@@ -21,12 +21,15 @@ function CameraRemoteAPI(actionListUrl) {
 		"getPostviewImageSize",
 		"getSupportedPostviewImageSize",
 		"getAvailablePostviewImageSize",
-		"getEvent", "startRecMode",
+		"getEvent",
+        "startRecMode",
 		"stopRecMode",
 		"getAvailableApiList",
 		"getApplicationInfo",
 		"getVersions",
-		"getMethodTypes"
+		"getMethodTypes",
+        "startIntervalStillRec",
+        "stopIntervalStillRec",
 	];
 	this.service = "/camera";
 	this.version = "\"1.0\"";
