@@ -1,74 +1,104 @@
 function CameraRemoteAPI(actionListUrl) {
-	this.methods = [
-		"getShootMode",
-		"getSupportedShootMode",
-		"getAvailableShootMode",
-		"actTakePicture",
-		"awaitTakePicture",
-		"startMovieRec",
-		"stopMovieRec",
-		"startAudioRec",
-		"stopAudioRec",
-		"startLiveview",
-		"startLiveviewWithSize",
-		"stopLiveview",
-		"actZoom",
-		"setSelfTimer",
-		"getSelfTimer",
-		"getSupportedSelfTimer",
-		"getAvailableSelfTimer",
-		"setPostviewImageSize",
-		"getPostviewImageSize",
-		"getSupportedPostviewImageSize",
-		"getAvailablePostviewImageSize",
-		"getEvent",
-        "startRecMode",
-		"stopRecMode",
-		"getAvailableApiList",
-		"getApplicationInfo",
-		"getVersions",
-		"getMethodTypes",
-        "startIntervalStillRec",
-        "stopIntervalStillRec",
-	];
-	this.service = "/camera";
-	this.version = "\"1.0\"";
+    this.methods = ["getMethodTypes",
+        "getAvailableApiList",
+        "setShootMode",
+        "getShootMode",
+        "getSupportedShootMode",
+        "getAvailableShootMode",
+        "setSelfTimer",
+        "getSelfTimer",
+        "getSupportedSelfTimer",
+        "getAvailableSelfTimer",
+        "setPostviewImageSize",
+        "getPostviewImageSize",
+        "getSupportedPostviewImageSize",
+        "getAvailablePostviewImageSize",
+        "startLiveview",
+        "stopLiveview",
+        "actTakePicture",
+        "startMovieRec",
+        "stopMovieRec",
+        "awaitTakePicture",
+        "actZoom",
+        "setExposureMode",
+        "getExposureMode",
+        "getSupportedExposureMode",
+        "getAvailableExposureMode",
+        "setBeepMode",
+        "getBeepMode",
+        "getSupportedBeepMode",
+        "getAvailableBeepMode",
+        "setCameraFunction",
+        "getCameraFunction",
+        "getSupportedCameraFunction",
+        "getAvailableCameraFunction",
+        "setStillSize",
+        "getStillSize",
+        "getSupportedStillSize",
+        "getAvailableStillSize",
+        "actFormatStorage",
+        "getStorageInformation",
+        "setTouchAFPosition",
+        "cancelTouchAFPosition",
+        "getTouchAFPosition",
+        "getSupportedExposureCompensation",
+        "getSupportedWhiteBalance",
+        "getSupportedIsoSpeedRate",
+        "actHalfPressShutter",
+        "cancelHalfPressShutter",
+        "getApplicationInfo",
+        "getVersions",
+        "getEvent"];
+    this.service = "/camera";
+    this.version = "\"1.0\"";
 
-	this.actionListUrl = actionListUrl;
+    this.actionListUrl = actionListUrl;
 
-	for(var i = 0; i < this.methods.length; i++) {
-		this[this.methods[i]] = (function(j) {
-			return function (params, successCallback, errorCallback) {
-				this.num = j;
-				this.endPointUrl = this.actionListUrl + this.service;
+    for(var i = 0; i < this.methods.length; i++) {
+        this[this.methods[i]] = (function(j) {
+            return function (params, successCallback, errorCallback) {
+                params = params || "[]"
+                successCallback = successCallback || function(id, response) {
+                    console.log("--- success response ---")
+                    console.log("response: " + response);
+                    console.log("id: " + id);
+                },
+                errorCallback = errorCallback || function(id, error){
+                    console.log("--- error response ---")
+                    console.log("id: " + id);
+                    console.log(error);
+                }
 
-				//var id = Math.round(new Date().getTime());
-				var id = 1;
+                this.num = j;
+                this.endPointUrl = this.actionListUrl + this.service;
 
-				var message = "{ \"method\": " + "\"" + this.methods[this.num] + "\", \"params\": " + params + "," + "\"id\": " + id + ", \"version\": " + this.version + "}";
-				console.log(message);
-				console.log(this.endPointUrl);
+                //var id = Math.round(new Date().getTime());
+                var id = 1;
 
-				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState === 4 && xhr.status === 200) {
-						console.log(xhr.responseText);
-						var response = JSON.parse(xhr.responseText);
-						successCallback(response.id, response.result);
-					}
-				};
-				xhr.open('POST', this.endPointUrl, true);
-				xhr.setRequestHeader('Content-Type', 'application/json');
-				xhr.send(message);
+                var message = "{ \"method\": " + "\"" + this.methods[this.num] + "\", \"params\": " + params + "," + "\"id\": " + id + ", \"version\": " + this.version + "}";
+                console.log(message);
+                console.log(this.endPointUrl);
 
-				return id;
-			};
-		})(i);
-	}
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        var response = JSON.parse(xhr.responseText);
+                        successCallback(response.id, response.result);
+                    }
+                };
+                xhr.open('POST', this.endPointUrl, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(message);
+
+                return id;
+            };
+        })(i);
+    }
 };
 
 CameraRemoteAPI.prototype.setActionListUrl = function(actionListUrl) {
-	this.actionListUrl = actionListUrl;
+    this.actionListUrl = actionListUrl;
 };
 
 var CRA_LIVEVIEW_MAX_RECEIVE_SIZE = 500000;

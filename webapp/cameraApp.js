@@ -36,6 +36,14 @@ var actions = [
     {method:"getMethodTypes", params:'[]'},
     {method:"startIntervalStillRec", params:'[]'},
     {method:"stopIntervalStillRec", params:'[]'},
+    {method:"getBeepMode", params:'[]'},
+    {method:"setBeepMode", params:'["On"]'},
+    {method:"setBeepMode", params:'["Off"]'},
+    {method: "getAvailableShootMode", params:'[]'},
+
+
+
+    
 ];
 
 /*
@@ -47,7 +55,7 @@ var actions = [
     console.log("App Version: " + window.navigator.appVersion.toLowerCase());
 
     // Init CameraRemoteAPI
-    var camera = new CameraRemoteAPI();
+    window.camera = new CameraRemoteAPI();
 
     // Init deivce name input
     var device = document.getElementById("device-name");
